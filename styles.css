@@ -285,6 +285,189 @@ a:hover {
   font-size: 1.4rem;
 }
 
+.equation-card {
+  margin: 24px 0;
+  padding: 18px 22px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.equation-title {
+  margin: 0 0 10px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.equation-line {
+  margin: 0 0 10px;
+}
+
+.equation-line:last-child {
+  margin-bottom: 0;
+}
+
+.equation-meta {
+  font-size: 0.9rem;
+  color: var(--muted);
+}
+
+.math {
+  font-family: "Newsreader", serif;
+  font-size: 1.05rem;
+  color: var(--ink);
+}
+
+.stack-diagram {
+  width: 100%;
+  height: auto;
+}
+
+.stack-box {
+  fill: #fff;
+  stroke: var(--line);
+  stroke-width: 1.5;
+  rx: 10;
+  ry: 10;
+}
+
+.stack-box.accent {
+  fill: rgba(10, 102, 255, 0.08);
+  stroke: rgba(10, 102, 255, 0.4);
+}
+
+.stack-label {
+  font-size: 0.75rem;
+  fill: var(--muted);
+  text-anchor: middle;
+}
+
+.stack-arrow {
+  stroke: var(--accent);
+  stroke-width: 2;
+}
+
+.stack-arrow-head {
+  fill: var(--accent);
+}
+
+.metric-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin: 20px 0 30px;
+}
+
+.metric-card {
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+}
+
+.metric-card h3 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
+.metric-value {
+  margin: 0 0 6px;
+  font-family: "Newsreader", serif;
+  font-size: 1.7rem;
+  color: var(--ink);
+}
+
+.metric-sub {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.plot-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin: 18px 0 30px;
+}
+
+.plot-card {
+  padding: 18px 20px;
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: #fff;
+  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+}
+
+.plot-card h3 {
+  margin: 0 0 12px;
+  font-size: 1.1rem;
+}
+
+.plot-chart {
+  width: 100%;
+  height: auto;
+}
+
+.plot-axis {
+  stroke: var(--line);
+  stroke-width: 2;
+}
+
+.plot-line {
+  fill: none;
+  stroke: var(--accent);
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-dasharray: 420;
+  stroke-dashoffset: 420;
+  animation: draw 1.6s ease forwards;
+}
+
+.plot-line.alt {
+  stroke: #d64b2a;
+  animation-delay: 0.2s;
+}
+
+.window-box {
+  fill: rgba(10, 102, 255, 0.12);
+  stroke: rgba(10, 102, 255, 0.35);
+  stroke-width: 2;
+}
+
+.window-slice {
+  fill: rgba(31, 36, 38, 0.08);
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+
+.window-arrow {
+  stroke: var(--accent);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  animation: sweep 2.6s ease-in-out infinite;
+}
+
+.cnn-block {
+  fill: #fff;
+  stroke: var(--line);
+  stroke-width: 2;
+  rx: 14;
+  ry: 14;
+}
+
+.cnn-line {
+  stroke: var(--accent);
+  stroke-width: 2;
+  stroke-dasharray: 6 6;
+}
+
+.cnn-label {
+  font-size: 0.75rem;
+  fill: var(--muted);
+}
+
 .flow-line {
   fill: none;
   stroke: var(--accent);
@@ -793,7 +976,10 @@ a:hover {
   }
 
   .regime-grid,
-  .setup-grid {
+  .setup-grid,
+  .metric-grid,
+  .plot-grid,
+  .process-grid {
     grid-template-columns: 1fr;
   }
 
