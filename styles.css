@@ -75,6 +75,7 @@ a:hover {
   box-shadow: var(--shadow);
 }
 
+
 .name {
   font-weight: 600;
   color: var(--ink);
@@ -933,7 +934,7 @@ code {
 
 .ladder-row {
   display: grid;
-  grid-template-columns: 80px 1fr 70px;
+  grid-template-columns: 80px 1fr 90px 80px;
   gap: 12px;
   align-items: center;
   font-size: 0.9rem;
@@ -941,6 +942,11 @@ code {
 }
 
 .ladder-label {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ladder-detail {
   font-weight: 600;
   color: var(--ink);
 }

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>How to Lose $50 Million | Nur Nibir Notes</title>
     <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="assets/cat-favicon.jpeg" type="image/jpeg" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -24,15 +25,24 @@
           <a href="index.html#about">about</a>
         </nav>
         <div class="social">
-          <a href="https://github.com" aria-label="GitHub">GH</a>
-          <a href="https://linkedin.com" aria-label="LinkedIn">IN</a>
-          <a href="https://twitter.com" aria-label="Twitter">TW</a>
+          <a href="https://github.com/nurnibir123" aria-label="GitHub">GH</a>
+          <a href="https://linkedin.com/in/nur-nibir" aria-label="LinkedIn">IN</a>
         </div>
       </header>
 
       <section class="post-hero">
         <p class="eyebrow">January 3, 2026 · Risk postmortem</p>
         <h1>How to Lose $50 Million</h1>
+        <div class="post-callout">
+          <h3>TL;DR</h3>
+          <ul>
+            <li>This was defined-risk per contract but undefined risk at portfolio scale because sizing escalated (martingale).</li>
+            <li>The "safe" 5-wide condor becomes lethal when you keep doubling after losses.</li>
+            <li>Their "win range" was narrow versus the full-loss zones above and below.</li>
+            <li>In 0DTE and short-dated SPX, tail moves are not rare enough to justify martingaling.</li>
+            <li>The "counterparty hunting" narrative is cope: the structure itself creates the blow-up.</li>
+          </ul>
+        </div>
         <p class="lede">
           A clear-eyed look at the reported $50M blowup tied to David Chau, aka
           Captain Condor, and how a "safe" options strategy can spiral out of
@@ -41,7 +51,7 @@
       </section>
 
       <main class="post">
-        <h2>Who/what is "Captain Condor"?</h2>
+        <h2>Who is "Captain Condor"?</h2>
         <p>
           This story follows a cohort of retail traders who rallied around a leader
           often referred to as David Chau. The group ran the same strategy on the
@@ -55,6 +65,16 @@
         <p>
           So the strategy was not dangerous because iron condors are "evil." It was
           dangerous because of how the group responded after losing.
+        </p>
+
+        <h2>What a Martingale Really Is</h2>
+        <p>
+          A martingale is simple: you lose, you double down, and you keep doubling
+          until you win so you net a single unit of profit. The framing here comes
+          from <a href="https://www.volsignals.com/">VolSignals'</a> video, which makes the point cleanly: martingale only
+          works if you have infinite capital and no betting limits. Real markets have
+          margin constraints, liquidity limits, and risk caps, so the strategy
+          eventually runs into the loss streak that wipes you out.
         </p>
 
         <h2>Options 101 in plain English</h2>
@@ -136,22 +156,19 @@
           </ul>
         </div>
 
-        <h2>So how did a "safe" structure turn into a disaster?</h2>
+        <h2>Why Iron Condors Look Safe (But Aren't, When You Scale Them)</h2>
         <p>
-          They used martingale. That is a gambling system where you size up after a
-          loss so one win can recover everything you lost before.
+          The mechanics are straightforward: sell an out-of-the-money put spread and
+          sell an out-of-the-money call spread. Collect premium if price stays between
+          the strikes. As VolSignals notes, a 5-point wide iron condor on SPX is about
+          as safe as option selling gets. Max loss is defined: $5 per contract minus
+          credit. Market inside the condor is a win. Market outside is a loss.
         </p>
-        <p><strong>What martingale means:</strong></p>
         <ul>
-          <li>If you lose, you double down (or size up) next time.</li>
-          <li>The logic is that the next win pays back every prior loss.</li>
+          <li><strong>Defined risk per contract.</strong> The spread width caps the loss on each side.</li>
+          <li><strong>Undefined risk per behavior (martingale sizing).</strong> Escalating size turns a capped loss into portfolio catastrophe.</li>
+          <li><strong>Tail risk + gap risk + trend days make repeated losses inevitable.</strong> When the streak hits, the sizing amplifies it.</li>
         </ul>
-        <p>
-          It sounds mathematically comforting, but it breaks in real life because you
-          do not have infinite money, margin, time, or perfect liquidity. The danger
-          is not iron condor. The danger is iron condor plus "if I lose I size up
-          massively."
-        </p>
 
         <h2>The stats trap they relied on (and why it is misleading)</h2>
         <p>
@@ -180,26 +197,58 @@
             <span class="ladder-label">Level 1</span>
             <span class="ladder-bar bar-1"></span>
             <span class="ladder-note">1 spread</span>
+            <span class="ladder-detail">1x risk</span>
           </div>
           <div class="ladder-row">
             <span class="ladder-label">Level 2</span>
             <span class="ladder-bar bar-2"></span>
             <span class="ladder-note">5 spreads</span>
+            <span class="ladder-detail">5x risk</span>
           </div>
           <div class="ladder-row">
             <span class="ladder-label">Level 3</span>
             <span class="ladder-bar bar-3"></span>
             <span class="ladder-note">17 spreads</span>
+            <span class="ladder-detail">17x risk</span>
           </div>
           <div class="ladder-row">
             <span class="ladder-label">Level 4</span>
             <span class="ladder-bar bar-4"></span>
             <span class="ladder-note">53 spreads</span>
+            <span class="ladder-detail">53x risk</span>
           </div>
         </div>
         <p>
           Even though each trade is defined risk, the total position risk explodes
           after a few losses. A short losing streak makes size go vertical.
+        </p>
+        <p>
+          That scaling collides with a narrow win range. In a 5-wide condor, once
+          price breaches a wing, you are quickly approaching max loss at expiration.
+          With size this huge, the market does not need a crash. It just needs to
+          drift into the wrong zone and stay there.
+        </p>
+        <p>
+          This was not "bad luck." The distribution of SPX outcomes eventually
+          touches your wings and martingale guarantees you are biggest right before
+          it happens.
+        </p>
+
+        <h2>Gamma &amp; Charm: Why the Market Didn't "Have To" Mean-Revert</h2>
+        <p>
+          Gamma is dDelta/dSpot, how dealer delta changes per $1 move. Charm is
+          dDelta/dTime, how delta changes as time passes. These flows force hedging
+          behavior:
+        </p>
+        <ul>
+          <li><strong>Positive gamma:</strong> stabilizes, encourages mean reversion.</li>
+          <li><strong>Negative gamma:</strong> destabilizes, trends, and accelerates.</li>
+        </ul>
+        <p>
+          When you are short condor wings, negative gamma zones are lethal. Moves can
+          cascade, so your short strikes get tested faster than "normal." In 0DTE and
+          short-dated books, hedging can push price into pain zones, pinning is never
+          guaranteed, and you should not bet survival on "it should stop here."
         </p>
 
         <h2 class="timeline-title">Timeline: How it unfolded</h2>
@@ -207,74 +256,59 @@
           The walkthrough claims to use OCC/CBOE customer positioning data to
           reconstruct the week. The figures below are part of that account.
         </p>
+        <h3>The Four Condors (The Escalation Pattern)</h3>
         <div class="timeline">
           <div class="timeline-item">
-            <span class="time">Dec 19, 2025 (OpEx)</span>
-            <p>About 4,000 condors sold, ~$2 credit, range 6,720-6,815. Full loss.</p>
+            <span class="time">Dec 19, 2025</span>
+            <p>
+              <strong>Trade #1 (12/19):</strong> SPXW Iron Condor (5-wide)<br />
+              <strong>Put spread:</strong> 6715/6720 · <strong>Call spread:</strong> 6815/6820<br />
+              <strong>Credit:</strong> $2.00 · <strong>Size:</strong> 4,400 sold<br />
+              <strong>Risk/Reward headline:</strong> risks $1.32M to make $880K
+            </p>
           </div>
           <div class="timeline-item">
             <span class="time">Dec 22, 2025</span>
-            <p>Size grows to roughly 17,000 condors, another full loss follows.</p>
+            <p>
+              <strong>Trade #2 (12/22):</strong> SPXW Iron Condor (5-wide)<br />
+              <strong>Put spread:</strong> 6795/6800 · <strong>Call spread:</strong> 6860/6865<br />
+              <strong>Credit:</strong> $2.00 · <strong>Size:</strong> 17,000 sold<br />
+              <strong>Risk/Reward headline:</strong> risks $5.1M to make $3.4M
+            </p>
           </div>
           <div class="timeline-item">
             <span class="time">Dec 23, 2025</span>
-            <p>Position swells to around 45,000 condors, premium gets cheaper, full loss.</p>
+            <p>
+              <strong>Trade #3 (12/23):</strong> SPXW Iron Condor (5-wide)<br />
+              <strong>Put spread:</strong> 6850/6855 · <strong>Call spread:</strong> 6900/6905<br />
+              <strong>Credit:</strong> $1.75 · <strong>Size:</strong> 48,000 sold<br />
+              <strong>Risk/Reward headline:</strong> risks $15.6M to make $8.4M
+            </p>
           </div>
           <div class="timeline-item">
             <span class="time">Dec 24, 2025</span>
-            <p>Christmas Eve half-day: straddle under $16, condor sits 10 points above spot.</p>
+            <p>
+              <strong>Trade #4 (12/24):</strong> SPXW Iron Condor (5-wide)<br />
+              <strong>Put spread:</strong> 6885/6890 · <strong>Call spread:</strong> 6920/6925<br />
+              <strong>Credit:</strong> $1.45 · <strong>Size:</strong> 110,000 sold<br />
+              <strong>Risk/Reward headline:</strong> risks $39.05M to make $15.95M
+            </p>
           </div>
         </div>
-
-        <h2>Why Christmas Eve was the "final boss"</h2>
-        <p>
-          Christmas Eve is a half-day with thin liquidity. That means wider spreads,
-          easier price swings, and more extreme hedging flows. The one-day straddle
-          was reportedly under $16, signaling a tiny expected move.
-        </p>
-        <p>
-          With SPX around 6,910, the call spread sat only about 10 points above the
-          market. A small upward drift was enough to break the range.
-        </p>
-        <figure class="post-figure">
-          <svg class="diagram" viewBox="0 0 640 200" role="img" aria-labelledby="breakoutTitle breakoutDesc">
-            <title id="breakoutTitle">Price breaks out of range</title>
-            <desc id="breakoutDesc">A price path moves outside the shaded range.</desc>
-            <rect x="100" y="60" width="340" height="80" class="range-box" />
-            <path
-              d="M90 115 C 170 95, 240 135, 320 110 S 430 80, 540 40"
-              class="breakout-line"
-            />
-            <line x1="90" y1="160" x2="560" y2="160" class="axis" />
-          </svg>
-          <figcaption>
-            When the range is too tight, a small move can trigger maximum loss.
-          </figcaption>
-        </figure>
-
-        <h2>The ending</h2>
-        <p>
-          SPX pushed through the strikes again. The final position went to max loss.
-          The account describes the strategy leader losing his capital and a large
-          group of followers losing theirs as well (he says roughly 10,000).
-        </p>
-
-        <h2>The big lessons (the moral)</h2>
         <ul>
-          <li>
-            <strong>Lesson 1: Don't sell options at any price.</strong> If premiums are
-            too cheap, you are taking real risk for crumbs.
-          </li>
-          <li>
-            <strong>Lesson 2: Know your terrain.</strong> Holiday weeks behave
-            differently, and a professional SPX trader would sit out.
-          </li>
+          <li>The credit shrinks while size explodes.</li>
+          <li>The market moving a little more on later days is enough to blow up the entire ladder.</li>
+          <li>This is the core issue: your expected value does not scale linearly when you are short tails and short convexity.</li>
         </ul>
-        <p>
-          <strong>The simplest summary:</strong> They paired a defined-risk strategy
-          (iron condor) with undefined-risk behavior (martingale sizing), and the
-          combination eventually guarantees a blow-up.
-        </p>
+
+        <h2>Lessons / Rules</h2>
+        <ul>
+          <li>Never martingale short options.</li>
+          <li>Don't confuse a defined-risk spread with a safe strategy.</li>
+          <li>If your plan requires one more try to work, it is already broken.</li>
+          <li>If the market must behave for your survival, you are not trading, you are praying.</li>
+          <li>Size is the strategy.</li>
+        </ul>
 
         <section class="sources">
           <h3>Sources</h3>
