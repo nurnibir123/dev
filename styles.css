@@ -1,12 +1,16 @@
 :root {
   color-scheme: light;
-  --ink: #1f2426;
-  --muted: #5b6468;
-  --accent: #0a66ff;
-  --paper: #f6f2ee;
+  --ink: #000000;
+  --muted: #666666;
+  --accent: #ff6b35;
+  --accent-2: #ffd93d;
+  --accent-3: #4a90d9;
+  --paper: #f5f5f5;
   --card: #ffffff;
-  --line: #ded7d0;
-  --shadow: 0 24px 60px rgba(31, 36, 38, 0.12);
+  --line: #000000;
+  --shadow: 6px 6px 0 #000000;
+  --font-mono: "Space Mono", "Courier Prime", monospace;
+  --font-display: "Playfair Display", Georgia, serif;
 }
 
 * {
@@ -15,24 +19,29 @@
 
 body {
   margin: 0;
-  font-family: "Work Sans", "Helvetica Neue", sans-serif;
+  font-family: var(--font-mono);
   color: var(--ink);
-  background: radial-gradient(circle at top, #fdfbf8 0%, var(--paper) 55%, #efe7df 100%);
+  background-color: var(--paper);
 }
 
 a {
-  color: var(--accent);
+  color: var(--ink);
   text-decoration: none;
+  border-bottom: 2px solid var(--accent);
 }
 
 a:hover {
-  text-decoration: underline;
+  background: var(--accent-2);
+  color: var(--ink);
 }
 
 .page {
-  max-width: 920px;
-  margin: 0 auto;
+  max-width: 960px;
+  margin: 28px auto 60px;
   padding: 32px 28px 80px;
+  background: var(--card);
+  border: 3px solid var(--line);
+  box-shadow: 12px 12px 0 var(--accent-2);
 }
 
 .topbar {
@@ -42,6 +51,8 @@ a:hover {
   gap: 24px;
   font-size: 0.95rem;
   letter-spacing: 0.01em;
+  border-bottom: 3px solid var(--line);
+  padding-bottom: 18px;
 }
 
 .brand {
@@ -54,12 +65,14 @@ a:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  font-weight: 600;
-  background: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  border: 3px solid var(--line);
+  font-weight: 700;
+  background: var(--accent);
+  color: #fff;
+  box-shadow: var(--shadow);
 }
 
 .name {
@@ -69,8 +82,24 @@ a:hover {
 
 .nav {
   display: flex;
-  gap: 20px;
-  font-weight: 500;
+  gap: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.nav a {
+  border: 2px solid var(--line);
+  padding: 6px 10px;
+  background: #fff;
+  box-shadow: 4px 4px 0 var(--line);
+  font-size: 0.7rem;
+  border-bottom: none;
+}
+
+.nav a:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--line);
 }
 
 .social {
@@ -80,17 +109,20 @@ a:hover {
 }
 
 .social a {
-  color: var(--muted);
+  color: var(--ink);
   padding: 6px 8px;
-  border-radius: 999px;
-  border: 1px solid transparent;
+  border-radius: 8px;
+  border: 2px solid var(--line);
+  background: #fff;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 3px 3px 0 var(--line);
+  border-bottom: none;
 }
 
 .social a:hover {
-  border-color: var(--line);
+  background: var(--accent-3);
 }
 
 .social svg {
@@ -100,19 +132,25 @@ a:hover {
 }
 
 .hero {
-  margin: 60px 0 48px;
+  margin: 48px 0 40px;
+  padding: 24px;
+  border: 3px solid var(--line);
+  background: #fff;
+  box-shadow: var(--shadow);
 }
 
 .eyebrow {
-  font-size: 0.95rem;
+  font-size: 0.85rem;
   color: var(--muted);
-  margin: 0 0 16px;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
 }
 
 .hero h1 {
-  font-family: "Newsreader", "Georgia", serif;
-  font-size: clamp(2rem, 4vw, 3rem);
-  line-height: 1.15;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 1.1;
   margin: 0 0 12px;
 }
 
@@ -130,15 +168,15 @@ a:hover {
 
 .year-block {
   padding: 28px 32px;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 20px;
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 12px;
   box-shadow: var(--shadow);
 }
 
 .year-block h2 {
-  font-family: "Newsreader", serif;
-  font-size: 1.6rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.4rem;
   margin: 0 0 16px;
 }
 
@@ -165,15 +203,15 @@ a:hover {
 
 .about-card {
   padding: 32px;
-  border-radius: 24px;
-  background: linear-gradient(140deg, #ffffff 0%, #fdfaf6 100%);
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #fff;
+  border: 3px solid var(--line);
   box-shadow: var(--shadow);
 }
 
 .about-card h2 {
-  font-family: "Newsreader", serif;
-  font-size: 2rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.7rem;
   margin: 8px 0 16px;
 }
 
@@ -195,8 +233,8 @@ a:hover {
 }
 
 .tags h2 {
-  font-family: "Newsreader", serif;
-  font-size: 1.6rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.4rem;
   margin: 0 0 16px;
 }
 
@@ -208,10 +246,16 @@ a:hover {
 
 .tag-grid span {
   padding: 8px 14px;
-  border-radius: 999px;
-  border: 1px solid var(--line);
-  background: #fff;
-  font-size: 0.9rem;
+  border-radius: 10px;
+  border: 2px solid var(--line);
+  background: var(--accent-2);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 3px 3px 0 var(--line);
+}
+
+.tag-grid span:nth-child(2n) {
+  background: var(--accent-3);
 }
 
 .footer {
@@ -219,10 +263,23 @@ a:hover {
   text-align: center;
   color: var(--muted);
   font-size: 0.9rem;
+  border-top: 3px solid var(--line);
+  padding-top: 16px;
 }
 
 .post-hero {
-  margin: 60px 0 32px;
+  margin: 48px 0 32px;
+  padding: 24px;
+  border: 3px solid var(--line);
+  background: #fff;
+  box-shadow: var(--shadow);
+}
+
+.post-hero h1 {
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  line-height: 1.1;
+  margin: 0 0 12px;
 }
 
 .post {
@@ -233,15 +290,15 @@ a:hover {
 }
 
 .post h2 {
-  font-family: "Newsreader", serif;
-  font-size: 1.7rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.45rem;
   margin: 32px 0 14px;
   color: var(--ink);
 }
 
 .post h3 {
-  font-family: "Newsreader", serif;
-  font-size: 1.3rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
   margin: 24px 0 10px;
   color: var(--ink);
 }
@@ -249,6 +306,16 @@ a:hover {
 .post p {
   margin: 0 0 18px;
   color: var(--muted);
+}
+
+code {
+  font-family: var(--font-mono);
+  font-size: 0.95em;
+  background: #fff;
+  border: 2px solid var(--line);
+  padding: 0 6px;
+  border-radius: 6px;
+  box-shadow: 2px 2px 0 var(--line);
 }
 
 .post ul {
@@ -268,34 +335,36 @@ a:hover {
 .post-callout {
   padding: 24px 28px;
   margin: 28px 0;
-  background: var(--card);
-  border: 1px solid var(--line);
-  border-radius: 20px;
+  background: #fff;
+  border: 3px solid var(--line);
+  border-radius: 12px;
   box-shadow: var(--shadow);
 }
 
 .post-callout.disclaimer {
-  background: #fff9f2;
-  border-left: 4px solid var(--accent);
+  background: var(--accent-2);
+  border-left: 6px solid var(--accent);
 }
 
 .post-callout h3 {
-  font-family: "Newsreader", serif;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
   margin: 0 0 12px;
-  font-size: 1.4rem;
+  font-size: 1.1rem;
 }
 
 .equation-card {
   margin: 24px 0;
   padding: 18px 22px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
   box-shadow: var(--shadow);
+  text-align: center;
 }
 
 .equation-title {
   margin: 0 0 10px;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
   font-weight: 600;
   color: var(--ink);
 }
@@ -311,12 +380,50 @@ a:hover {
 .equation-meta {
   font-size: 0.9rem;
   color: var(--muted);
+  font-style: normal;
 }
 
 .math {
-  font-family: "Newsreader", serif;
+  font-family: var(--font-mono);
   font-size: 1.05rem;
   color: var(--ink);
+  font-style: italic;
+}
+
+.math sub {
+  font-size: 0.7em;
+  vertical-align: baseline;
+  position: relative;
+  bottom: -0.25em;
+}
+
+.math-hat {
+  position: relative;
+  display: inline-block;
+  padding: 0 2px;
+}
+
+.math-hat::after {
+  content: "^";
+  position: absolute;
+  left: 50%;
+  top: -0.65em;
+  transform: translateX(-50%);
+  font-size: 0.7em;
+  color: var(--muted);
+}
+
+.diagram {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.diagram * {
+  transform-box: fill-box;
+  transform-origin: center;
+  vector-effect: non-scaling-stroke;
 }
 
 .stack-diagram {
@@ -339,7 +446,7 @@ a:hover {
 
 .stack-label {
   font-size: 0.75rem;
-  fill: var(--muted);
+  fill: var(--ink);
   text-anchor: middle;
 }
 
@@ -361,21 +468,24 @@ a:hover {
 
 .metric-card {
   padding: 18px 20px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
-  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+  box-shadow: var(--shadow);
 }
 
 .metric-card h3 {
   margin: 0 0 10px;
-  font-size: 1.1rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .metric-value {
   margin: 0 0 6px;
-  font-family: "Newsreader", serif;
-  font-size: 1.7rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.5rem;
   color: var(--ink);
 }
 
@@ -394,15 +504,18 @@ a:hover {
 
 .plot-card {
   padding: 18px 20px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
-  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+  box-shadow: var(--shadow);
 }
 
 .plot-card h3 {
   margin: 0 0 12px;
-  font-size: 1.1rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
 }
 
 .plot-chart {
@@ -412,7 +525,7 @@ a:hover {
 
 .plot-axis {
   stroke: var(--line);
-  stroke-width: 2;
+  stroke-width: 2.5;
 }
 
 .plot-line {
@@ -426,20 +539,33 @@ a:hover {
 }
 
 .plot-line.alt {
-  stroke: #d64b2a;
+  stroke: var(--accent-3);
   animation-delay: 0.2s;
 }
 
-.window-box {
-  fill: rgba(10, 102, 255, 0.12);
-  stroke: rgba(10, 102, 255, 0.35);
+.hist-bar {
+  fill: var(--accent-2);
+  stroke: var(--line);
   stroke-width: 2;
+  animation: pop 1.2s ease forwards;
+  transform-origin: bottom;
+  transform: scaleY(0);
+}
+
+.hist-bar.emphasis {
+  fill: var(--accent);
+}
+
+.window-box {
+  fill: rgba(0, 194, 255, 0.2);
+  stroke: var(--line);
+  stroke-width: 2.5;
 }
 
 .window-slice {
-  fill: rgba(31, 36, 38, 0.08);
+  fill: rgba(255, 212, 0, 0.35);
   stroke: var(--line);
-  stroke-width: 1.5;
+  stroke-width: 2;
 }
 
 .window-arrow {
@@ -508,10 +634,10 @@ a:hover {
 
 .regime-card {
   padding: 20px 22px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
-  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+  box-shadow: var(--shadow);
 }
 
 .regime-card ul {
@@ -524,20 +650,20 @@ a:hover {
   display: inline-flex;
   align-items: center;
   padding: 4px 10px;
-  border-radius: 999px;
-  border: 1px solid rgba(10, 102, 255, 0.3);
-  background: rgba(10, 102, 255, 0.08);
+  border-radius: 8px;
+  border: 2px solid var(--line);
+  background: var(--accent-3);
   font-size: 0.75rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--ink);
   font-weight: 600;
 }
 
 .chip.negative {
-  border-color: rgba(214, 75, 42, 0.35);
-  background: rgba(214, 75, 42, 0.12);
-  color: #b6442a;
+  border-color: var(--line);
+  background: var(--accent-2);
+  color: var(--ink);
 }
 
 .regime-icon {
@@ -600,15 +726,16 @@ a:hover {
 
 .setup-card {
   padding: 20px 22px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
-  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+  box-shadow: var(--shadow);
 }
 
 .setup-card h3 {
   margin-top: 0;
-  font-size: 1.2rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1rem;
 }
 
 .setup-card ul {
@@ -626,10 +753,10 @@ a:hover {
 
 .process-card {
   padding: 20px 22px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
-  background: var(--card);
-  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+  border-radius: 12px;
+  border: 3px solid var(--line);
+  background: #fff;
+  box-shadow: var(--shadow);
 }
 
 .process-step {
@@ -638,7 +765,7 @@ a:hover {
   letter-spacing: 0.18em;
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--accent);
+  color: var(--ink);
   margin-bottom: 10px;
 }
 
@@ -655,8 +782,8 @@ a:hover {
 }
 
 .timeline-title {
-  font-family: "Newsreader", serif;
-  font-size: 1.4rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
   margin: 32px 0 14px;
   color: var(--ink);
 }
@@ -664,15 +791,15 @@ a:hover {
 .sources {
   margin: 32px 0 24px;
   padding: 20px 24px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
-  box-shadow: 0 20px 40px rgba(31, 36, 38, 0.08);
+  box-shadow: var(--shadow);
 }
 
 .sources h3 {
-  font-family: "Newsreader", serif;
-  font-size: 1.3rem;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
+  font-size: 1.1rem;
   margin: 0 0 12px;
 }
 
@@ -695,14 +822,14 @@ a:hover {
 
 .info-card {
   padding: 18px 20px;
-  border-radius: 18px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
-  box-shadow: 0 18px 36px rgba(31, 36, 38, 0.08);
+  box-shadow: var(--shadow);
 }
 
 .info-card h3 {
-  font-family: "Newsreader", serif;
+  font-family: "Unbounded", "Space Grotesk", sans-serif;
   font-size: 1.1rem;
   margin: 0 0 8px;
 }
@@ -717,9 +844,9 @@ a:hover {
 .post-figure {
   margin: 24px 0 20px;
   padding: 20px 22px;
-  border-radius: 20px;
-  border: 1px solid var(--line);
-  background: var(--card);
+  border-radius: 12px;
+  border: 3px solid var(--line);
+  background: #fff;
   box-shadow: var(--shadow);
 }
 
@@ -729,15 +856,9 @@ a:hover {
   color: var(--muted);
 }
 
-.diagram {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
 .axis {
   stroke: var(--line);
-  stroke-width: 2;
+  stroke-width: 2.5;
 }
 
 .axis-label {
@@ -745,10 +866,15 @@ a:hover {
   fill: var(--muted);
 }
 
+.tick-label {
+  font-size: 0.55rem;
+  fill: var(--ink);
+}
+
 .range-box {
-  fill: rgba(10, 102, 255, 0.12);
-  stroke: rgba(10, 102, 255, 0.3);
-  stroke-width: 2;
+  fill: rgba(255, 212, 0, 0.25);
+  stroke: var(--line);
+  stroke-width: 2.5;
 }
 
 .condor-line {
@@ -797,8 +923,8 @@ a:hover {
 .ladder {
   margin: 24px 0 26px;
   padding: 20px 22px;
-  border-radius: 20px;
-  border: 1px solid var(--line);
+  border-radius: 12px;
+  border: 3px solid var(--line);
   background: #fff;
   box-shadow: var(--shadow);
   display: grid;
@@ -866,7 +992,7 @@ a:hover {
 .timeline {
   margin: 24px 0 28px;
   padding-left: 18px;
-  border-left: 2px solid var(--line);
+  border-left: 3px solid var(--line);
   display: grid;
   gap: 18px;
 }
@@ -883,9 +1009,9 @@ a:hover {
   top: 6px;
   width: 12px;
   height: 12px;
-  border-radius: 50%;
+  border-radius: 4px;
   background: var(--accent);
-  box-shadow: 0 0 0 6px rgba(10, 102, 255, 0.12);
+  box-shadow: 4px 4px 0 var(--line);
 }
 
 .timeline-item:last-child::before {
@@ -909,8 +1035,26 @@ a:hover {
 .post-disclaimer {
   font-size: 0.9rem;
   color: var(--muted);
-  border-top: 1px solid var(--line);
+  border-top: 3px solid var(--line);
   padding-top: 18px;
+}
+
+.hero h1,
+.year-block h2,
+.about-card h2,
+.tags h2,
+.post-hero h1,
+.post h2,
+.post h3,
+.post-callout h3,
+.equation-title,
+.metric-card h3,
+.metric-value,
+.plot-card h3,
+.sources h3,
+.info-card h3,
+.timeline-title {
+  font-family: var(--font-display);
 }
 
 @keyframes draw {
@@ -952,7 +1096,20 @@ a:hover {
   }
 }
 
+@keyframes pop {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+
 @media (max-width: 720px) {
+  .page {
+    margin: 16px;
+    box-shadow: 6px 6px 0 var(--accent-2);
+  }
   .topbar {
     flex-direction: column;
     align-items: flex-start;

@@ -3,12 +3,12 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Forecasting the S&amp;P 500 with a CNN | Nur Nibir Notes</title>
+    <title>Forecasting the Next Trading Day in SPX (Hourly) | Nur Nibir Notes</title>
     <link rel="stylesheet" href="styles.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Newsreader:wght@400;600;700&family=Work+Sans:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
       rel="stylesheet"
     />
   </head>
@@ -44,355 +44,253 @@
 
       <section class="post-hero">
         <p class="eyebrow">January 22, 2026 · Machine learning research</p>
-        <h1>Forecasting the S&amp;P 500 with a CNN: From Research Paper to Real Data</h1>
+        <h1>Forecasting the Next Trading Day in SPX (Hourly) with a Probability CNN</h1>
         <p class="lede">
-          A practical case study in turning market history into a signal, training a
-          1D CNN, and evaluating the results on real S&amp;P 500 data. Source code for this experiment can be found <a href="https://github.com/nurnibir123/spx-cnn/blob/main/spx_cnn.ipynb">here</a>
+          A fast, ResNet-style Conv1D that predicts a full distribution of next-day
+          moves instead of a single point estimate.
+        </p>
+        <p class="lede">
+          Inspired by Rahul Gupta's research paper, <em>S&P 500 Stock's Movement Prediction using CNN</em>,
+          and adapted to the hourly SPX tape. This is a reminder that you don’t need institutional data to have institutional alpha.
         </p>
         <div class="post-callout disclaimer">
           <p>
             <strong>Disclaimer:</strong> This is educational content, not financial
-            advice. Forecasting market prices is uncertain and can lead to rapid
-            losses in real trading.
+            advice. Market forecasting is uncertain and can lead to rapid losses.
           </p>
         </div>
       </section>
 
       <main class="post">
-        <h2>Why I built this</h2>
+        <h2>Why probabilities beat point forecasts</h2>
         <p>
-          I have always been interested in financial forecasting, not as a crystal
-          ball, but as an engineering challenge. A research paper on using CNNs for
-          market time-series data (S&P 500 Stock's Movement Prediction using CNN by Rahul Gupta) sparked the idea: treat price history like a signal
-          and let a convolutional model learn repeating patterns over time.
-        </p>
-        <p>
-          CNNs are usually associated with images, but they are powerful on sequences
-          too. That was enough to build a real version using the dataset I had on
-          hand: historical S&amp;P 500 index data.
+          Single-price forecasts can be misleading. A model can be directionally
+          correct while missing magnitude, or land close to the close while being
+          wrong about risk. Instead of asking for the exact next candle, I asked a
+          more useful question: where is SPX likely to end up after the next seven
+          hourly candles, and with what probability?
         </p>
 
-        <h2>What I wanted to predict</h2>
-        <p>I targeted two horizons to separate short-term and longer-term dynamics:</p>
-        <ul>
-          <li><strong>T+5 trading days:</strong> near-term momentum and volatility.</li>
-          <li><strong>T+30 trading days:</strong> longer trend and macro drift.</li>
-        </ul>
-
-        <h2>Dataset: S&amp;P 500 historical daily data</h2>
+        <h2>What I built</h2>
         <p>
-          The dataset includes daily OHLC values (open, high, low, close) plus percent
-          change. I merged an older archive with a newer update, removed duplicates,
-          and sorted everything chronologically to prevent leakage.
+          The model outputs a probability distribution over the next-day move. That
+          lets me compute trading-style probabilities like:
+        </p>
+        <div class="post-callout">
+          <ul>
+            <li>P(Δ7 ≥ +10 points)</li>
+            <li>P(Δ7 ≤ -10 points)</li>
+            <li>P(|Δ7| ≤ 10 points)</li>
+          </ul>
+        </div>
+        <p>
+          This framing matches how traders think: ranges, probabilities, and risk
+          bands rather than a single deterministic close.
         </p>
 
-        <h2>Turning price history into model inputs</h2>
+        <h2>Dataset</h2>
         <p>
-          Instead of feeding single days, I built sliding windows so each training
-          sample contains the last 60 trading days. The model predicts returns, not
-          absolute price.
+          I used hourly SPX OHLC candles. Each row is one hour of open, high, low,
+          and close. The model looks back 120 hours (about 3-4 weeks of trading hours)
+          and predicts the move over the next 7 hourly candles, which is one full
+          trading day. Training data spans May 15, 2019 at 10:30 AM ET through
+          January 23, 2026 at 3:30 PM ET.
+        </p>
+
+        <h2>Turning forecasting into classification</h2>
+        <p>
+          Instead of predicting a future close, I predict the future point move after
+          seven hours and discretize it into bins.
         </p>
         <div class="equation-card">
-          <p class="equation-title">Windowing</p>
+          <p class="equation-title">Future move</p>
           <p class="equation-line">
-            <span class="math">X<sub>t</sub> = [t-59, ..., t]</span>
+            <span class="math">Δ<sub>7</sub> = Close<sub>t+7</sub> - Close<sub>t</sub></span>
           </p>
           <p class="equation-line">
-            <span class="math">y<sub>t+5</sub> = (P<sub>t+5</sub> - P<sub>t</sub>) / P<sub>t</sub></span>
-          </p>
-          <p class="equation-line">
-            <span class="math">y<sub>t+30</sub> = (P<sub>t+30</sub> - P<sub>t</sub>) / P<sub>t</sub></span>
+            <span class="math">BIN_SIZE = 5 | MAX_MOVE = 200</span>
           </p>
           <p class="equation-line equation-meta">
-            <span class="math">Input shape: (60, 8) | Targets: (samples, 2)</span>
+            <span class="math">Bins cover [-200, +200] → 80 total bins</span>
+          </p>
+        </div>
+        <p>
+          Each label is a single bin index. The CNN then outputs an 80-bin softmax
+          distribution for the next-day move.
+        </p>
+
+        <h2>Windowing setup</h2>
+        <p>
+          WINDOW = 120, HORIZON = 7. Each input is a 120-hour feature matrix.
+        </p>
+        <div class="equation-card">
+          <p class="equation-title">Shapes</p>
+          <p class="equation-line">
+            <span class="math">X ∈ R<sup>120 x F</sup></span>
+          </p>
+          <p class="equation-line">
+            <span class="math">y ∈ {0, 1, ..., 79}</span>
           </p>
         </div>
         <figure class="post-figure">
           <svg class="diagram" viewBox="0 0 640 190" role="img" aria-labelledby="windowTitle windowDesc">
-            <title id="windowTitle">Sliding window input</title>
-            <desc id="windowDesc">A 60 day window feeds the CNN and targets future returns.</desc>
-            <rect x="40" y="70" width="360" height="60" class="window-box" />
-            <rect x="420" y="70" width="80" height="60" class="window-box" />
-            <rect x="510" y="70" width="80" height="60" class="window-box" />
-            <rect x="60" y="90" width="320" height="20" class="window-slice" />
-            <path d="M400 100 L420 100" class="window-arrow" />
-            <path d="M500 100 L510 100" class="window-arrow" />
-            <text x="70" y="60" class="axis-label">60-day input window</text>
-            <text x="432" y="60" class="axis-label">T+5</text>
-            <text x="520" y="60" class="axis-label">T+30</text>
+            <title id="windowTitle">Windowing for probability CNN</title>
+            <desc id="windowDesc">A 120-hour window feeds the CNN and targets the next 7-hour move.</desc>
+            <rect x="40" y="70" width="420" height="60" class="window-box" />
+            <rect x="480" y="70" width="100" height="60" class="window-box" />
+            <rect x="60" y="90" width="380" height="20" class="window-slice" />
+            <path d="M460 100 L480 100" class="window-arrow" />
+            <text x="70" y="60" class="axis-label">120-hour input window</text>
+            <text x="502" y="60" class="axis-label">T+7</text>
           </svg>
           <figcaption>
-            Each sample includes the last 60 sessions and predicts returns 5 and 30
-            days ahead.
+            Each sample uses 120 hours of history to classify the 7-hour move bin.
           </figcaption>
         </figure>
-        <h3>Why predict returns instead of price?</h3>
+
+        <h2>Model architecture: fast ResNet-style Conv1D</h2>
         <p>
-          Predicting raw price can make training unstable because price levels drift
-          over decades. Returns are more stationary, so the model focuses on relative
-          movement instead of absolute magnitude.
+          A small ResNet-style CNN gave the best balance of accuracy, speed, and
+          stability. It is parameter-efficient and trains quickly on hourly candles.
         </p>
-        <div class="equation-card">
-          <p class="equation-title">Return to price reconstruction</p>
-          <p class="equation-line">
-            <span class="math">P_hat<sub>t+h</sub> = P<sub>t</sub> * (1 + r_hat<sub>t+h</sub>)</span>
-          </p>
+        <div class="post-callout">
+          <ul>
+            <li><strong>Stem:</strong> Conv1D(32, k=5) + BN + LeakyReLU + SpatialDropout</li>
+            <li><strong>Residual blocks:</strong> 2x ResBlock(32) → MaxPool → 2x ResBlock(64) → MaxPool → ResBlock(128)</li>
+            <li><strong>Head:</strong> GlobalAvgPool → Dense(64) → Dense(80, softmax)</li>
+          </ul>
         </div>
-
-        <h2>Feature engineering (small changes, big impact)</h2>
-        <p>
-          The paper used a richer feature set, but I expanded the available data with
-          derived signals that capture volatility and candle structure.
-        </p>
-        <div class="post-grid">
-          <div class="info-card">
-            <h3>HL_range</h3>
-            <p>Daily range relative to price: <code>(H - L) / P</code></p>
-          </div>
-          <div class="info-card">
-            <h3>OC_change</h3>
-            <p>Open to close move: <code>(P - O) / O</code></p>
-          </div>
-          <div class="info-card">
-            <h3>Ret_1d</h3>
-            <p>Daily return: <code>(P_t - P_t-1) / P_t-1</code></p>
-          </div>
-        </div>
-        <p>
-          Final channels: Open, High, Low, Close, Change %, HL_range, OC_change,
-          Ret_1d. The CNN treats those channels like a multi-band signal.
-        </p>
-
-        <h2>Normalization and target scaling</h2>
-        <p>
-          To keep the learning stable and avoid data leakage, I normalized inputs and
-          constrained targets in a separate step.
-        </p>
-        <ul>
-          <li>StandardScaler fit on training windows only.</li>
-          <li>Train and test windows transformed with the same scaler.</li>
-          <li>Return bounds computed from the 1% and 99% training quantiles.</li>
-          <li>Targets scaled into [-1, 1] and mapped through tanh output.</li>
-        </ul>
-
-        <h2>Why CNNs work here</h2>
-        <p>
-          CNNs can learn repeating patterns inside a time window. Markets are noisy,
-          but local structures do repeat: momentum bursts, volatility compression,
-          and short-term mean reversion. A 1D CNN can learn those patterns without the
-          training cost of a recurrent model.
-        </p>
-
-        <h2>Model architecture</h2>
-        <p>
-          The model is a 1D CNN regressor with convolution blocks, batch normalization,
-          LeakyReLU activations, global average pooling, and dense layers for the
-          two outputs.
-        </p>
-        <h3>Exact layer stack</h3>
         <figure class="post-figure stack-figure">
-          <svg class="diagram stack-diagram" viewBox="0 0 640 580" role="img" aria-labelledby="stackTitle stackDesc">
-            <title id="stackTitle">CNN layer stack</title>
-            <desc id="stackDesc">Exact CNN layers used for the forecasting model.</desc>
+          <svg class="diagram stack-diagram" viewBox="0 0 640 660" role="img" aria-labelledby="stackTitle stackDesc">
+            <title id="stackTitle">ResNet-style Conv1D stack</title>
+            <desc id="stackDesc">Stem, residual blocks, pooling, and softmax head.</desc>
             <defs>
               <marker id="stackArrow" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
                 <path d="M0,0 L8,4 L0,8 Z" class="stack-arrow-head" />
               </marker>
             </defs>
             <rect x="90" y="24" width="460" height="30" class="stack-box accent" />
-            <text x="320" y="44" class="stack-label">Input (60 x 8)</text>
-            <line x1="320" y1="54" x2="320" y2="68" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <text x="320" y="44" class="stack-label">Input (120 x F)</text>
+            <line x1="320" y1="54" x2="320" y2="72" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="74" width="460" height="30" class="stack-box" />
-            <text x="320" y="94" class="stack-label">Conv1D 64 + BN + LeakyReLU</text>
-            <line x1="320" y1="104" x2="320" y2="118" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <rect x="90" y="84" width="460" height="30" class="stack-box" />
+            <text x="320" y="104" class="stack-label">Conv1D 32 + BN + LeakyReLU</text>
+            <line x1="320" y1="114" x2="320" y2="132" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="124" width="460" height="30" class="stack-box" />
-            <text x="320" y="144" class="stack-label">Conv1D 64 + BN + LeakyReLU</text>
-            <line x1="320" y1="154" x2="320" y2="168" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <rect x="90" y="144" width="460" height="30" class="stack-box" />
+            <text x="320" y="164" class="stack-label">SpatialDropout1D</text>
+            <line x1="320" y1="174" x2="320" y2="192" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="174" width="460" height="30" class="stack-box" />
-            <text x="320" y="194" class="stack-label">MaxPooling1D (2)</text>
-            <line x1="320" y1="204" x2="320" y2="218" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <rect x="90" y="204" width="460" height="30" class="stack-box" />
+            <text x="320" y="224" class="stack-label">ResBlock x2 (32)</text>
+            <line x1="320" y1="234" x2="320" y2="252" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="224" width="460" height="30" class="stack-box" />
-            <text x="320" y="244" class="stack-label">Conv1D 128 + BN + LeakyReLU</text>
-            <line x1="320" y1="254" x2="320" y2="268" class="stack-arrow" marker-end="url(#stackArrow)" />
-
-            <rect x="90" y="274" width="460" height="30" class="stack-box" />
-            <text x="320" y="294" class="stack-label">Conv1D 128 + BN + LeakyReLU</text>
-            <line x1="320" y1="304" x2="320" y2="318" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <rect x="90" y="264" width="460" height="30" class="stack-box" />
+            <text x="320" y="284" class="stack-label">MaxPooling1D</text>
+            <line x1="320" y1="294" x2="320" y2="312" class="stack-arrow" marker-end="url(#stackArrow)" />
 
             <rect x="90" y="324" width="460" height="30" class="stack-box" />
-            <text x="320" y="344" class="stack-label">GlobalAveragePooling1D</text>
-            <line x1="320" y1="354" x2="320" y2="368" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <text x="320" y="344" class="stack-label">ResBlock x2 (64)</text>
+            <line x1="320" y1="354" x2="320" y2="372" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="374" width="460" height="30" class="stack-box" />
-            <text x="320" y="394" class="stack-label">Dropout 0.25</text>
-            <line x1="320" y1="404" x2="320" y2="418" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <rect x="90" y="384" width="460" height="30" class="stack-box" />
+            <text x="320" y="404" class="stack-label">MaxPooling1D</text>
+            <line x1="320" y1="414" x2="320" y2="432" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="424" width="460" height="30" class="stack-box" />
-            <text x="320" y="444" class="stack-label">Dense 128 + BN + LeakyReLU</text>
-            <line x1="320" y1="454" x2="320" y2="468" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <rect x="90" y="444" width="460" height="30" class="stack-box" />
+            <text x="320" y="464" class="stack-label">ResBlock x1 (128)</text>
+            <line x1="320" y1="474" x2="320" y2="492" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="474" width="460" height="30" class="stack-box" />
-            <text x="320" y="494" class="stack-label">Dropout 0.25</text>
-            <line x1="320" y1="504" x2="320" y2="518" class="stack-arrow" marker-end="url(#stackArrow)" />
+            <rect x="90" y="504" width="460" height="30" class="stack-box" />
+            <text x="320" y="524" class="stack-label">GlobalAveragePooling1D</text>
+            <line x1="320" y1="534" x2="320" y2="552" class="stack-arrow" marker-end="url(#stackArrow)" />
 
-            <rect x="90" y="524" width="460" height="30" class="stack-box accent" />
-            <text x="320" y="544" class="stack-label">Dense 2 + tanh</text>
+            <rect x="90" y="564" width="460" height="30" class="stack-box" />
+            <text x="320" y="584" class="stack-label">Dense 64</text>
+            <line x1="320" y1="594" x2="320" y2="612" class="stack-arrow" marker-end="url(#stackArrow)" />
+
+            <rect x="90" y="624" width="460" height="30" class="stack-box accent" />
+            <text x="320" y="644" class="stack-label">Dense 80 + softmax</text>
           </svg>
           <figcaption>
-            Exact layer stack from the input window to the bounded two-horizon outputs.
+            The fast ResNet-style Conv1D produces a probability distribution over 80
+            bins for the next-day move.
           </figcaption>
         </figure>
-        <div class="post-callout">
-          <h3>Output constraints</h3>
-          <ul>
-            <li>Return targets are scaled into [-1, 1].</li>
-            <li>Tanh activation keeps predictions bounded.</li>
-            <li>Outputs are rescaled back into return space per horizon.</li>
-          </ul>
-        </div>
 
-        <h2>Training setup</h2>
+        <h2>Training details</h2>
         <ul>
           <li>Time split: first 80% train, last 20% test.</li>
-          <li>Optimizer: Adam with learning rate 5e-4.</li>
-          <li>Loss: Huber (delta = 0.05) to reduce outlier impact.</li>
-          <li>Batch size 256, max epochs 60.</li>
-          <li>EarlyStopping (val_loss, patience 6, restore best weights).</li>
-          <li>ReduceLROnPlateau (val_loss, factor 0.5, patience 3, min_lr 1e-5).</li>
+          <li>StandardScaler fit on training only.</li>
+          <li>Batch size 1024, epochs 20 with early stopping.</li>
+          <li>Loss: sparse categorical cross entropy.</li>
+          <li>Optimizer: Adam (lr = 1e-3).</li>
+          <li>Callbacks: EarlyStopping(patience=4), ReduceLROnPlateau(patience=2).</li>
         </ul>
 
-        <h2>Results and model performance</h2>
+        <h2>Probability map outputs</h2>
         <p>
-          I evaluated forecasts in price space by reconstructing predicted prices from
-          the return outputs. The short-term horizon tracked the market more closely
-          than the long-term horizon, which is expected in noisy markets.
+          The output is a full histogram of likely Δ7 outcomes. From that histogram
+          I compute bullish, bearish, and chop-day probabilities. The histogram below
+          reflects the latest available data as of January 23, 2026 at 3:30 PM ET.
+        </p>
+        <figure class="post-figure">
+          <img
+            class="plot-chart probability-chart"
+            src="assets/spx-probability-map.png"
+            alt="SPX close at +7 candles probability map histogram"
+            loading="lazy"
+          />
+          <figcaption>
+            Histogram output lets you compute directional or range probabilities.
+          </figcaption>
+        </figure>
+
+        <h2>CNN vs Transformer results</h2>
+        <p>
+          I tested a Transformer model on the same task. It consistently lagged the
+          CNN on short-horizon errors.
         </p>
         <div class="metric-grid">
           <div class="metric-card">
-            <h3>T+5 RMSE</h3>
-            <p class="metric-value">117.65</p>
-            <p class="metric-sub">T+5 MAE: 86.64</p>
+            <h3>CNN errors</h3>
+            <p class="metric-value">Step +1 RMSE: 23.0</p>
+            <p class="metric-sub">Step +5 RMSE: 51.0</p>
           </div>
           <div class="metric-card">
-            <h3>T+30 RMSE</h3>
-            <p class="metric-value">266.83</p>
-            <p class="metric-sub">T+30 MAE: 217.94</p>
+            <h3>Transformer errors</h3>
+            <p class="metric-value">Step +1 RMSE: 24.0</p>
+            <p class="metric-sub">Step +5 RMSE: 53.2</p>
           </div>
         </div>
 
-        <div class="plot-grid">
-          <div class="plot-card">
-            <h3>T+5 Forecast Plot</h3>
-            <svg class="plot-chart" viewBox="0 0 320 160" role="img" aria-labelledby="plot5Title plot5Desc">
-              <title id="plot5Title">Actual vs predicted T+5</title>
-              <desc id="plot5Desc">Two lines show actual and predicted prices.</desc>
-              <line x1="30" y1="130" x2="300" y2="130" class="plot-axis" />
-              <line x1="30" y1="30" x2="30" y2="130" class="plot-axis" />
-              <path d="M30 110 C 70 80, 120 100, 170 70 S 260 60, 300 40" class="plot-line" />
-              <path d="M30 118 C 80 90, 130 105, 180 82 S 255 75, 300 55" class="plot-line alt" />
-            </svg>
-            <p class="metric-sub">Short-term predictions stay close to the trend.</p>
-          </div>
-          <div class="plot-card">
-            <h3>T+30 Forecast Plot</h3>
-            <svg class="plot-chart" viewBox="0 0 320 160" role="img" aria-labelledby="plot30Title plot30Desc">
-              <title id="plot30Title">Actual vs predicted T+30</title>
-              <desc id="plot30Desc">Two lines show actual and predicted prices.</desc>
-              <line x1="30" y1="130" x2="300" y2="130" class="plot-axis" />
-              <line x1="30" y1="30" x2="30" y2="130" class="plot-axis" />
-              <path d="M30 100 C 90 70, 140 85, 200 60 S 270 40, 300 55" class="plot-line" />
-              <path d="M30 112 C 90 88, 150 95, 210 78 S 270 65, 300 70" class="plot-line alt" />
-            </svg>
-            <p class="metric-sub">Longer horizons lag and deviate more, as expected.</p>
-          </div>
-          <div class="plot-card">
-            <h3>Training Curve</h3>
-            <svg class="plot-chart" viewBox="0 0 320 160" role="img" aria-labelledby="trainTitle trainDesc">
-              <title id="trainTitle">Training loss curve</title>
-              <desc id="trainDesc">Loss declines and then levels out.</desc>
-              <line x1="30" y1="130" x2="300" y2="130" class="plot-axis" />
-              <line x1="30" y1="30" x2="30" y2="130" class="plot-axis" />
-              <path d="M30 40 C 90 60, 150 90, 220 100 S 280 110, 300 112" class="plot-line" />
-            </svg>
-            <p class="metric-sub">Huber loss stabilized with early stopping.</p>
-          </div>
-        </div>
-
-        <h2>Latest model forecast</h2>
-        <p>
-          Using the most recent 60-day window, the model produced the following
-          forecasts:
-        </p>
-        <div class="metric-grid">
-          <div class="metric-card">
-            <h3>Latest input</h3>
-            <p class="metric-value">2026-01-21</p>
-            <p class="metric-sub">Last price: 6875.62</p>
-          </div>
-          <div class="metric-card">
-            <h3>Predicted T+5</h3>
-            <p class="metric-value">6944.05</p>
-            <p class="metric-sub">Return: +0.995%</p>
-          </div>
-          <div class="metric-card">
-            <h3>Predicted T+30</h3>
-            <p class="metric-value">6827.78</p>
-            <p class="metric-sub">Return: -0.695%</p>
-          </div>
-        </div>
-
-        <div class="post-callout">
-          <p>
-            The takeaway: a small short-term drift higher, followed by mild mean
-            reversion over the 30-day horizon. The predictions stay within realistic
-            bounds instead of extreme jumps.
-          </p>
-        </div>
-
-        <h2>What I learned</h2>
+        <h2>Why CNNs won on this dataset</h2>
         <ul>
-          <li>Predicting returns is more stable than predicting absolute price.</li>
-          <li>Bounding outputs with tanh prevents unrealistic spikes.</li>
-          <li>Feature engineering outperformed simply adding more layers.</li>
-          <li>Longer horizons are fundamentally harder to predict.</li>
+          <li>CNNs assume local, reusable patterns, which matches candle behavior.</li>
+          <li>Transformers need more data to learn locality from scratch.</li>
+          <li>CNNs trained faster, so iteration and tuning were more productive.</li>
         </ul>
 
-        <h2>Limitations</h2>
-        <ul>
-          <li>No macro or news awareness.</li>
-          <li>No explicit volatility regime modeling.</li>
-          <li>Daily data only, no intraday structure.</li>
-          <li>Single-point forecasts, not full paths.</li>
-        </ul>
+        <h2>Automating the pipeline (next step)</h2>
+        <ol class="step-list">
+          <li>Append new hourly candles to the dataset.</li>
+          <li>Fine-tune the model on CPU for a few epochs.</li>
+          <li>Generate the next-day probability map.</li>
+          <li>Publish the histogram and JSON to the site.</li>
+        </ol>
 
-        <h2>Next improvements I want to try</h2>
+        <h2>Final takeaways</h2>
         <ul>
-          <li>Multi-step forecasts for a full 30-day path.</li>
-          <li>Technical features like moving averages, RSI, and ATR.</li>
-          <li>Transformer and attention-based baselines.</li>
-          <li>Walk-forward validation instead of a single split.</li>
-          <li>Baseline comparisons with LSTM and XGBoost.</li>
+          <li>Predict distributions, not point estimates.</li>
+          <li>Small CNNs can outperform larger models on realistic datasets.</li>
+          <li>Probability outputs align better with trading decisions.</li>
         </ul>
-
-        <h2>Final thoughts</h2>
-        <p>
-          This project was inspired by research, but the real work was translating the
-          idea into a working pipeline on real data. Even though markets are noisy,
-          building models like this is a great way to sharpen time-series engineering,
-          feature design, and evaluation discipline.
-        </p>
 
         <section class="sources">
           <h3>Sources</h3>
           <ul>
             <li>
-              <a href="https://arxiv.org/abs/2512.21804">
-                arXiv: 2512.21804
-              </a>
+              <a href="https://arxiv.org/abs/2512.21804">arXiv: 2512.21804</a>
             </li>
           </ul>
         </section>
