@@ -333,6 +333,42 @@ code {
   color: var(--ink);
 }
 
+.table-wrap {
+  margin: 22px 0 28px;
+  border-radius: 12px;
+  border: 3px solid var(--line);
+  background: #fff;
+  box-shadow: var(--shadow);
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.data-table {
+  width: 100%;
+  min-width: 640px;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+.data-table th,
+.data-table td {
+  border: 2px solid var(--line);
+  padding: 12px 14px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.data-table th {
+  background: var(--accent-2);
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.data-table td {
+  color: var(--muted);
+  line-height: 1.6;
+}
+
 .post-callout {
   padding: 24px 28px;
   margin: 28px 0;

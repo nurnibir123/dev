@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>The October 10th Crypto Market Crash | Nur Nibir Notes</title>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="icon" href="assets/cat-favicon.jpeg" type="image/jpeg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Space+Mono:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="page">
+      <header class="topbar">
+        <div class="brand">
+          <span class="logo">NN</span>
+          <span class="name">Nur Nibir</span>
+        </div>
+        <nav class="nav">
+          <a href="index.html#home">home</a>
+          <a href="index.html#about">about</a>
+        </nav>
+        <div class="social">
+          <a href="https://github.com/nurnibir123" aria-label="GitHub">GH</a>
+          <a href="https://linkedin.com/in/nur-nibir" aria-label="LinkedIn">IN</a>
+        </div>
+      </header>
+
+      <section class="post-hero">
+        <p class="eyebrow">February 17, 2026 · Market postmortem</p>
+        <h1>Oct 10, 2025: The Day Crypto Broke</h1>
+        <div class="post-callout">
+          <h3>TL;DR</h3>
+          <ul>
+            <li>A macro tariff escalation headline triggered a rapid risk-off cascade around 20:50 UTC.</li>
+            <li>Leverage, thin order books, and market maker pullback turned selling into a liquidation wave.</li>
+            <li>Binance later disclosed transfer degradation and index deviations for USDe, WBETH, and BNSOL.</li>
+          </ul>
+        </div>
+        <p class="lede">
+          A combined analysis of the October 10, 2025 crypto flash crash and the Binance-specific
+          mechanics that appear to have deepened the drawdown after the initial macro shock.
+        </p>
+      </section>
+
+      <main class="post">
+        <h2>Executive summary</h2>
+        <p>
+          The Oct 10, 2025 selloff unfolded as a fast, liquidation-driven drawdown concentrated in
+          a roughly 70-minute window beginning around 20:50 UTC. The best evidence points to a
+          macro risk-off trigger, followed by a mechanical cascade driven by leverage, shrinking
+          order book depth, and cross-venue frictions that impaired arbitrage.
+          By multiple accounts, this was also the largest “one‑day” liquidation 
+          event in crypto to date, with > $19B in forced liquidations and widespread evidence of “reflexive” 
+          selling via derivatives risk engines. 
+        </p>
+
+        <h2>Crash timeline (UTC)</h2>
+        <p>
+          The core crash window is 20:50 to 22:00 UTC, with surrounding anchors across Oct 9 to Oct 13.
+          These points align Binance incident reporting, Reuters coverage, and post-event disclosures.
+        </p>
+        <div class="timeline">
+          <div class="timeline-item">
+            <span class="time">Oct 9</span>
+            <p>Pre-crash positioning: top assets near local highs in CoinMarketCap snapshots.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="time">Oct 10 20:50</span>
+            <p>Macro shock hits; selloff accelerates and liquidation engines kick in.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="time">Oct 10 21:10 to 21:20</span>
+            <p>Highest volatility window per Binance post-analysis; large share of daily liquidations realized.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="time">Oct 10 21:18 to 21:51</span>
+            <p>Binance reports internal transfer degradation; matching and risk engines remain operational.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="time">Oct 10 21:36 to 22:15</span>
+            <p>Index deviations begin for USDe, WBETH, and BNSOL amid thin liquidity.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="time">Oct 13</span>
+            <p>Reuters reports a rush for options hedges after record liquidations.</p>
+          </div>
+          <div class="timeline-item">
+            <span class="time">Oct 22</span>
+            <p>Binance reports total compensation exceeding $328M.</p>
+          </div>
+        </div>
+
+        <h2>Cross-asset impact (focused snapshot)</h2>
+        <p>
+          Daily snapshots can understate crash severity. The table below captures reported intraday
+          lows for BTC, ETH, DOGE, and SOL, showing how large moves in major alts exceeded BTC moves.
+        </p>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Asset</th>
+                <th>Pre-crash reference</th>
+                <th>Reported low</th>
+                <th>Approx drawdown</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>BTC</td>
+                <td>$122,574.46 (Reuters high)</td>
+                <td>$104,782.88 (Reuters low)</td>
+                <td>-14.5%</td>
+                <td>Macro unwind and derivatives liquidation cascade; record liquidations over $19B.</td>
+              </tr>
+              <tr>
+                <td>ETH</td>
+                <td>~$3,913.77 (Reuters implied)</td>
+                <td>$3,436.29 (Reuters low)</td>
+                <td>-12.2%</td>
+                <td>Sharp downside concurrent with broader liquidation wave.</td>
+              </tr>
+              <tr>
+                <td>DOGE</td>
+                <td>~$0.22 (CoinDesk summary)</td>
+                <td>~$0.11 (CoinDesk summary)</td>
+                <td>-50%</td>
+                <td>Flash-crash dynamics: “$0.22 → $0.11” within minutes at ~21:00 UTC per CoinDesk summary; Reuters separately reports DOGE saw ~-62% drawdowns before stabilizing (different data cut).</td>
+              </tr>
+              <tr>
+                <td>SOL</td>
+                <td>~$229 (Trillium reference)</td>
+                <td>~$173.81 (Trillium low)</td>
+                <td>-24.1%</td>
+                <td>Large drawdown over ~29 hours in Trillium’s reconstruction; Galaxy also reports SOL was ~-25% at the nadir. </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p>
+          Two points matter for “how bad was it”:
+        </p>
+        <p>
+          First, many large-cap and mid-cap tokens experienced >50% 
+          intraday drawdowns, even if BTC and ETH did not. Reuters 
+          lists examples like HYPE (-54%), DOGE (-62%), and AVAX (-70%) 
+          in the same event window, and Galaxy notes some longer-tail 
+          altcoins dropped 50%–75% in minutes. 
+        </p>
+        <p>
+          Second, venue-specific microstructure failures can create extreme 
+          prints that are not representative of global clearing prices. Binance 
+          itself acknowledges that thin liquidity and dormant limit orders can 
+          trigger momentary collapses in certain spot pairs (and that some pairs 
+          displayed “zero” due to UI/tick-size effects). 
+        </p>
+
+        <h2>What triggered the crash</h2>
+        <p>
+          Multiple sources converge on a macro trigger: Donald Trump announced a large escalation in U.S.–China trade policy 
+          (additional 100% tariff; software export controls) reported as being communicated via Truth Social, in the context 
+          of rare earth / critical mineral export controls and renewed trade war concerns. 
+        </p>
+        <p>
+          The crash was then magnified by a liquidity vacuum. Binance cites Kaiko analysis indicating
+          BTC order book depth was near zero on some exchanges within a 4% spread, creating a regime
+          where marginal sell flow could drive outsized price moves and forced liquidations.
+        </p>
+
+        <h2>Binance amplification mechanisms</h2>
+        <p>
+          Based on primary documentation, third-party research, and high-quality financial reporting, the following conclusions are well-supported:
+        </p>
+        <p>
+          Binance meaningfully increased exposure to USDe on-platform by offering a high headline yield, allowing reward accrual on collateral held in margin contexts, and removing an upper holding cap per user. 
+        </p>
+        <p>
+          During the crash, USDe’s most severe dislocation was Binance-local, and at least some analyses attribute forced liquidations to margin systems marking collateral to the distressed Binance venue price. 
+        <p>
+          Binance’s own statement acknowledges collateral depegs, platform module glitches, and very large compensation payouts, even as it disputes being the primary cause of the overall market crash. 
+        </p>
+        <p>
+          Put bluntly: Binance does not need to be the initial trigger to deserve substantial blame as an amplifier. Incentive design + collateral eligibility + brittle oracle/mark construction can transform an external shock into a system-threatening liquidation cascade.
+        </p>
+
+        <h2>What remains uncertain or under-documented publicly</h2>
+        <p>
+          To quantify “full scale” and responsibility precisely, these gaps matter:
+        </p>
+        <p>
+          Collateral haircuts / LTV limits for USDe on Binance at the time of the crash. 
+          The public reward announcement confirms collateral eligibility and uncapped holdings, 
+          but not the exact leverage constraints. 
+        </p>
+        <p>
+          The exact technical mechanism of Binance’s internal price referencing (“oracle,” “index,” “mark”) 
+          for USDe and other collateral instruments at the minute-by-minute level, including whether deposits/withdrawals 
+          were impaired and how long that impairment persisted (third parties claim this was critical; Binance acknowledges 
+          module glitches but not a fully granular technical trace).
+        </p>
+        <p>
+          Independent, exchange-level order-book and latency telemetry sufficient to apportion liquidation causality 
+          (macro vs. market-maker pullback vs. venue failures). Binance cites macro and asserts timing; independent research argues 
+          venue pricing and collateral marking were central for at least a large subset of liquidations. 
+        </p>
+
+        <h2>Conclusions and actionable lessons</h2>
+        <h3>For traders and risk managers</h3>
+        <ul>
+          <li>
+            <strong>If a platform pays yield on an asset that can be posted as margin, 
+            assume the system can become reflexive under stress and manage exposure accordingly 
+            (lower leverage, diversify collateral, stress-test collateral marks, and assume temporary venue isolation). 
+            </strong>
+          </li>
+        </ul>
+        <h3>For policymakers and market operators</h3>
+        <ul>
+          <li><strong>Exchange-integrated synthetic dollars and yield-bearing collateral require minimum market-structure standards: robust multi-venue reference pricing, safeguards against thin-order-book marks driving liquidations.</strong></li>
+        </ul>
+
+        <section class="sources">
+          <h3>Sources</h3>
+          <ul>
+            <li><a href="https://www.binance.com/en/square/post/35795256795473">Binance Square: Oct 10 volatility analysis</a></li>
+            <li><a href="https://www.binance.com/en/support/announcement/detail/d9cb0d52d7c142a5be4f49732bd8760c">Binance incident statement (Oct 12)</a></li>
+            <li><a href="https://www.binance.com/en/support/announcement/detail/9eb104f497044e259ad9bd8f259f265c">Binance USDe rewards program announcement</a></li>
+            <li><a href="https://www.reuters.com/world/china/us-will-impose-additional-100-tariff-chinese-imports-november-trump-says-2025-10-10/">Reuters: tariff escalation catalyst</a></li>
+            <li><a href="https://www.reuters.com/world/asia-pacific/after-record-crypto-crash-rush-hedge-against-another-freefall-2025-10-13/">Reuters: post-crash hedging surge</a></li>
+            <li><a href="https://coinmarketcap.com/historical/20251009/">CoinMarketCap snapshot (Oct 9)</a></li>
+            <li><a href="https://coinmarketcap.com/historical/20251010/">CoinMarketCap snapshot (Oct 10)</a></li>
+            <li><a href="https://apnews.com/article/cc47e258cfc6336dfddcc20fa67a3642">AP: cross-asset risk-off move</a></li>
+            <li><a href="https://isdown.app/status/coinbase/incidents/457538-degraded-performance">Coinbase degraded performance record</a></li>
+            <li><a href="https://www.whitehouse.gov/fact-sheets/2025/11/fact-sheet-president-donald-j-trump-strikes-deal-on-economic-and-trade-relations-with-china/">White House fact sheet (Nov 1)</a></li>
+            <li><a href="https://www.whitehouse.gov/presidential-actions/2025/11/modifying-reciprocal-tariff-rates-consistent-with-the-economic-and-trade-arrangement-between-the-united-states-and-the-peoples-republic-of-china/">White House executive order (Nov 4)</a></li>
+            <li><a href="https://www.21shares.com/en-eu/research/why-did-ethenas-stablecoin-remain-stable-onchain-but-depegged-on-binance">21Shares: USDe dislocation analysis</a></li>
+            <li><a href="https://gov.ethenafoundation.com/t/ethenas-october-2025-governance-update/711">Ethena governance update (Oct 2025)</a></li>
+            <li><a href="https://site.twstalker.com/star_okx/status/2017411129501426064">Star Xu (OKX) commentary archive</a></li>
+            <li><a href="https://www.coindesk.com/markets/2025/10/11/doge-suffers-50-flash-crash-before-stabilizing-near-usd0-19">CoinDesk: DOGE flash crash</a></li>
+            <li><a href="https://trillium.so/pages/oct_10_2025_crash_analysis.html">Trillium: Oct 10 crash analysis</a></li>
+          </ul>
+        </section>
+        <p class="post-disclaimer">
+          This post is a synthesis of public sources for educational purposes and is not financial advice.
+        </p>
+      </main>
+
+      <footer class="footer">
+        <p>Made with curiosity.</p>
+      </footer>
+    </div>
+  </body>
+</html>
