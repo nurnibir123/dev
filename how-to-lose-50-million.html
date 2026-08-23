@@ -16,18 +16,18 @@
   <body>
     <div class="page">
       <header class="topbar">
-        <div class="brand">
+        <a class="brand" href="index.html">
           <span class="logo">NN</span>
           <span class="name">Nur Nibir</span>
-        </div>
+        </a>
         <nav class="nav">
           <a href="index.html#home">home</a>
           <a href="index.html#about">about</a>
         </nav>
-        <div class="social">
+        <div class="header-actions"><div class="social">
           <a href="https://github.com/nurnibir123" aria-label="GitHub">GH</a>
           <a href="https://linkedin.com/in/nur-nibir" aria-label="LinkedIn">IN</a>
-        </div>
+        </div><button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle dark theme">☾</button></div>
       </header>
 
       <section class="post-hero">
@@ -358,5 +358,6 @@
       </main>
 
     </div>
+    <script>function applyTheme(){var dark=localStorage.getItem('theme')==='dark';document.documentElement.dataset.theme=dark?'dark':'light';document.querySelectorAll('.theme-toggle').forEach(function(button){button.textContent=dark?'☼':'☾';});document.querySelectorAll('.twitter-tweet').forEach(function(tweet){tweet.setAttribute('data-theme',dark?'dark':'light');});}function toggleTheme(){localStorage.setItem('theme',document.documentElement.dataset.theme==='dark'?'light':'dark');applyTheme();}applyTheme();</script>
   </body>
 </html>

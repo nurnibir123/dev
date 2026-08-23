@@ -1,8 +1,9 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const posts = [
   { date: '08/23/2026', title: 'Revenue + Stablecoins: My Thesis for the 2026–2030 Crypto Bull Run', href: 'revenue-stablecoins-crypto-bull-run.html' },
-  { date: '01/03/2026', title: 'How to Lose $50 Million w Iron Condors', href: 'how-to-lose-50-million.html' },
+  { date: '01/03/2026', title: 'How to Lose $50 Million with Iron Condors', href: 'how-to-lose-50-million.html' },
 ];
 
 function SocialLinks() {
@@ -13,10 +14,17 @@ function SocialLinks() {
 }
 
 export default function App() {
+  const [darkMode, setDarkMode] = useState(() => localStorage.getItem('theme') === 'dark');
+
+  useEffect(() => {
+    document.documentElement.dataset.theme = darkMode ? 'dark' : 'light';
+    localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+  }, [darkMode]);
+
   return <div className="page">
-    <header className="topbar"><Link className="brand" to="/"><span className="logo">NN</span><span className="name">Nur Nibir</span></Link><nav className="nav"><Link to="/">home</Link><a href="#about">about</a></nav><SocialLinks /></header>
-    <section id="home" className="hero"><h1>Runtime Notes.</h1><p className="lede">A running log of essays and experiments. I write about software engineering, finance, and the occasional detour that’s too interesting not to document.</p></section>
+    <header className="topbar"><Link className="brand" to="/"><span className="logo">NN</span><span className="name">Nur Nibir</span></Link><nav className="nav"><Link to="/">home</Link><a href="#about">about</a></nav><div className="header-actions"><SocialLinks /><button className="theme-toggle" type="button" onClick={() => setDarkMode((value) => !value)} aria-label="Toggle dark theme">{darkMode ? '☼' : '☾'}</button></div></header>
+    <section id="home" className="hero"><h1>Runtime Notes.</h1><p className="lede">Notes on software systems, markets, and the ideas between them. I write about engineering, finance, and the mechanics behind both.</p></section>
     <main className="content"><section className="year-block"><h2>2026</h2><ol>{posts.map((post) => <li key={post.href}><span>({post.date})</span> <a href={`./${post.href}`}>{post.title}</a></li>)}</ol></section></main>
-    <section id="about" className="about"><div className="about-card"><p className="date">January 20, 2026</p><h2>About Me</h2><p>Hey, I am Nur. I grew up in Queens, NY, went to college at Stony Brook University where I received my B.S. in Computer Science. Nowadays I help product teams ship thoughtful systems. This space is where I keep the random experiments and musings that deserve a slower pace.</p><p>I’m a software engineer who loves building reliable, scalable systems that power real customer experiences. I’ve worked across high-impact teams at AWS, Amazon Alexa, Coinbase and American Express, where I designed and owned distributed systems, improved performance and resiliency, and helped teams safely roll out major changes like platform migrations and multi-region expansions.</p></div></section>
+    <section id="about" className="about"><div className="about-card"><p className="date">January 20, 2026</p><h2>About Me</h2><p>Hey, I’m Nur. I grew up in Queens and studied computer science at Stony Brook University. I work with product teams on the systems behind customer-facing software. This site is where I collect experiments, market observations, and unfinished ideas.</p><p>I’ve built distributed systems at AWS, Amazon Alexa, Coinbase, and American Express. My work has covered platform migrations, performance, resiliency, and multi-region launches.</p></div></section>
   </div>;
 }

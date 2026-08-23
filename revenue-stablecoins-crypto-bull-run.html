@@ -15,7 +15,7 @@
       <header class="topbar">
         <a class="brand" href="index.html"><span class="logo">NN</span><span class="name">Nur Nibir</span></a>
         <nav class="nav"><a href="index.html#home">home</a><a href="index.html#about">about</a></nav>
-        <div class="social"><a href="https://github.com/nurnibir123" aria-label="GitHub">GH</a><a href="https://linkedin.com/in/nur-nibir" aria-label="LinkedIn">IN</a></div>
+        <div class="header-actions"><div class="social"><a href="https://github.com/nurnibir123" aria-label="GitHub">GH</a><a href="https://linkedin.com/in/nur-nibir" aria-label="LinkedIn">IN</a></div><button class="theme-toggle" type="button" onclick="toggleTheme()" aria-label="Toggle dark theme">☾</button></div>
       </header>
 
       <section class="post-hero">
@@ -23,6 +23,8 @@
         <h1>Revenue + Stablecoins: My Thesis for the 2026–2030 Crypto Bull Run</h1>
         <p class="lede">The next crypto cycle will favor protocols with measurable revenue, token-holder distributions, and stablecoins that function as global payment infrastructure.</p>
         <div class="post-callout disclaimer"><p><strong>Disclaimer:</strong> This is educational content, not financial advice. Crypto assets and public equities can lose substantial value. Verify figures and assess your own risk before acting.</p></div>
+        <div id="tweet-embed"><blockquote class="twitter-tweet" data-theme="light"><p lang="en" dir="ltr">With inflation at 7.5%, you lose half your money in 9 years. The only way to outperform that consistently, that I have found, is crypto. Just this year I’ve already lost half my money.</p>&mdash; rm (@sprainhill) <a href="https://x.com/sprainhill/status/1492861918419329025?ref_src=twsrc%5Etfw">February 13, 2022</a></blockquote></div>
+        <script async src="https://platform.x.com/widgets.js" charset="utf-8"></script>
       </section>
 
       <main class="post">
@@ -152,5 +154,6 @@
         <p class="post-disclaimer">This post is a personal thesis based on public sources. Figures may change, and some supplied claims require independent verification. This is not financial advice.</p>
       </main>
     </div>
+    <script>var tweetOriginal=document.querySelector('.twitter-tweet').outerHTML;function applyTheme(){var dark=localStorage.getItem('theme')==='dark';document.documentElement.dataset.theme=dark?'dark':'light';document.querySelectorAll('.theme-toggle').forEach(function(button){button.textContent=dark?'☼':'☾';});var holder=document.getElementById('tweet-embed');if(holder){holder.innerHTML=tweetOriginal;holder.firstElementChild.setAttribute('data-theme',dark?'dark':'light');if(window.twttr&&window.twttr.widgets){window.twttr.widgets.load(holder);}}}function toggleTheme(){localStorage.setItem('theme',document.documentElement.dataset.theme==='dark'?'light':'dark');applyTheme();}applyTheme();</script>
   </body>
 </html>
