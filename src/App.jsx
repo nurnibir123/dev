@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 
 const posts = [
-  { date: '01/10/2026', title: 'Revenue + Stablecoins: My Thesis for the 2026–2030 Crypto Bull Run', href: 'revenue-stablecoins-crypto-bull-run.html' },
+  { date: '08/23/2026', title: 'Revenue + Stablecoins: My Thesis for the 2026–2030 Crypto Bull Run', href: 'revenue-stablecoins-crypto-bull-run.html' },
   { date: '01/03/2026', title: 'How to Lose $50 Million w Iron Condors', href: 'how-to-lose-50-million.html' },
 ];
 
