@@ -36,17 +36,17 @@
         <div class="post-callout">
           <h3>TL;DR</h3>
           <ul>
-            <li>This was defined-risk per contract but undefined risk at portfolio scale because sizing escalated (martingale).</li>
-            <li>The "safe" 5-wide condor becomes lethal when you keep doubling after losses.</li>
+            <li>Each contract had defined risk. Portfolio risk grew without a practical limit as sizing escalated.</li>
+            <li>A 5-wide condor can produce severe losses when you double the position after each loss.</li>
             <li>Their "win range" was narrow versus the full-loss zones above and below.</li>
-            <li>In 0DTE and short-dated SPX, tail moves are not rare enough to justify martingaling.</li>
+            <li>0DTE and short-dated SPX produce enough tail moves to break a martingale.</li>
             <li>The "counterparty hunting" narrative is cope: the structure itself creates the blow-up.</li>
           </ul>
         </div>
         <p class="lede">
           A clear-eyed look at the reported $50M blowup tied to David Chau, aka
-          Captain Condor, and how a "safe" options strategy can spiral out of
-          control when it is paired with reckless sizing.
+          Captain Condor, and how position sizing turned a defined-risk trade into a
+          portfolio-level loss.
         </p>
       </section>
 
@@ -57,17 +57,17 @@
           often referred to as David Chau. The group ran the same strategy on the
           S&P 500 (SPX) every day and treated it as a dependable income engine.
         </p>
-        <p>The key idea was simple:</p>
+        <p>The trade had two separate parts:</p>
         <ul>
           <li><strong>The trade itself:</strong> an iron condor can be risk-defined.</li>
           <li><strong>The loss management:</strong> sizing up after losses turns it dangerous.</li>
         </ul>
         <p>
-          So the strategy was not dangerous because iron condors are "evil." It was
-          dangerous because of how the group responded after losing.
+          The group increased size after losses. That decision made the strategy
+          dangerous.
         </p>
 
-        <h2>What a Martingale Really Is</h2>
+        <h2>What a Martingale Does</h2>
         <p>
           A martingale is simple: you lose, you double down, and you keep doubling
           until you win so you net a single unit of profit. The framing here comes
@@ -79,12 +79,12 @@
 
         <h2>Options 101 in plain English</h2>
         <p>
-          If you have never traded options, think of them as time-limited contracts
+          Options are time-limited contracts
           on a stock or index. A call lets the buyer profit if price goes up, while a
           put lets the buyer profit if price goes down. The seller collects a premium
           up front and takes the obligation if the buyer exercises the contract.
         </p>
-        <div class="post-grid">
+        <div class="post-grid options-grid">
           <div class="info-card">
             <h3>Option</h3>
             <p>A contract tied to an underlying price with a set strike and date.</p>
@@ -119,22 +119,39 @@
           premium collected). The same structure sits below the market with puts.
         </p>
         <figure class="post-figure">
-          <svg class="diagram" viewBox="0 0 640 220" role="img" aria-labelledby="condorTitle condorDesc">
-            <title id="condorTitle">Iron condor payoff diagram</title>
-            <desc id="condorDesc">A flat profit zone with losses outside the range.</desc>
-            <rect x="150" y="85" width="340" height="70" class="range-box" />
-            <line x1="60" y1="180" x2="590" y2="180" class="axis" />
-            <line x1="60" y1="40" x2="60" y2="180" class="axis" />
-            <polyline
-              points="90,180 160,120 480,120 550,180"
-              class="condor-line"
-            />
-            <path
-              d="M90 130 C 170 90, 230 165, 320 120 S 470 100, 550 70"
-              class="price-wave"
-            />
-            <text x="118" y="200" class="axis-label">lower strike</text>
-            <text x="470" y="200" class="axis-label">upper strike</text>
+          <svg class="diagram condor-diagram" viewBox="0 0 720 340" role="img" aria-labelledby="condorTitle condorDesc">
+            <title id="condorTitle">How an iron condor is built and where it makes money</title>
+            <desc id="condorDesc">Four option legs surround the current price. The middle range earns a capped premium, while either outer wing has capped loss.</desc>
+            <text x="24" y="25" class="diagram-kicker">THE FOUR LEGS</text>
+            <line x1="42" y1="84" x2="678" y2="84" class="condor-track" />
+            <line x1="105" y1="68" x2="105" y2="101" class="strike-line wing" />
+            <line x1="220" y1="68" x2="220" y2="101" class="strike-line short" />
+            <line x1="500" y1="68" x2="500" y2="101" class="strike-line short" />
+            <line x1="615" y1="68" x2="615" y2="101" class="strike-line wing" />
+            <text x="105" y="124" text-anchor="middle" class="strike-label">6885</text>
+            <text x="220" y="124" text-anchor="middle" class="strike-label">6890</text>
+            <text x="500" y="124" text-anchor="middle" class="strike-label">6920</text>
+            <text x="615" y="124" text-anchor="middle" class="strike-label">6925</text>
+            <text x="105" y="52" text-anchor="middle" class="leg-label">BUY PUT</text>
+            <text x="220" y="52" text-anchor="middle" class="leg-label short-label">SELL PUT</text>
+            <text x="500" y="52" text-anchor="middle" class="leg-label short-label">SELL CALL</text>
+            <text x="615" y="52" text-anchor="middle" class="leg-label">BUY CALL</text>
+            <path d="M105 151 L105 164 L220 164 L220 151" class="wing-bracket" />
+            <path d="M500 151 L500 164 L615 164 L615 151" class="wing-bracket" />
+            <text x="162" y="185" text-anchor="middle" class="axis-label">5-point put wing</text>
+            <text x="557" y="185" text-anchor="middle" class="axis-label">5-point call wing</text>
+            <text x="24" y="224" class="diagram-kicker">AT EXPIRATION</text>
+            <line x1="42" y1="297" x2="678" y2="297" class="axis" />
+            <line x1="105" y1="239" x2="105" y2="308" class="payoff-guide" />
+            <line x1="220" y1="239" x2="220" y2="308" class="payoff-guide" />
+            <line x1="500" y1="239" x2="500" y2="308" class="payoff-guide" />
+            <line x1="615" y1="239" x2="615" y2="308" class="payoff-guide" />
+            <polyline points="55,297 105,263 220,263 500,263 615,297 665,297" class="payoff-line" />
+            <rect x="220" y="245" width="280" height="36" class="profit-band" />
+            <text x="360" y="258" text-anchor="middle" class="profit-label">CAPS PROFIT · KEEP THE CREDIT</text>
+            <text x="65" y="318" class="axis-label">loss</text>
+            <text x="360" y="318" text-anchor="middle" class="axis-label">price stays inside the range</text>
+            <text x="607" y="318" class="axis-label">loss</text>
           </svg>
           <figcaption>
             The flat zone is where the condor earns premium. A fast move beyond the
@@ -148,7 +165,7 @@
           <li><strong>Hold for time decay.</strong> Profit if price stays between the strikes.</li>
         </ol>
         <div class="post-callout">
-          <h3>Why it looks "safe" on paper</h3>
+          <h3>Why the structure looks safe on paper</h3>
           <ul>
             <li><strong>No unlimited loss:</strong> the spread width caps worst-case risk.</li>
             <li><strong>Premium up front:</strong> you collect cash immediately.</li>
@@ -161,7 +178,7 @@
           The mechanics are straightforward: sell an out-of-the-money put spread and
           sell an out-of-the-money call spread. Collect premium if price stays between
           the strikes. As VolSignals notes, a 5-point wide iron condor on SPX is about
-          as safe as option selling gets. Max loss is defined: $5 per contract minus
+          as controlled as option selling gets. Max loss is defined: $5 per contract minus
           credit. Market inside the condor is a win. Market outside is a loss.
         </p>
         <ul>
@@ -176,7 +193,7 @@
           finishes within one standard deviation of the expected move. That is a
           classic probability assumption from normal distributions.
         </p>
-        <p>But real markets do not behave like clean statistical machines:</p>
+        <p>Real markets break that assumption in several ways:</p>
         <ul>
           <li>Fat tails and sudden jumps show up more often than the model expects.</li>
           <li>Trend days break tidy ranges.</li>
@@ -225,13 +242,11 @@
         <p>
           That scaling collides with a narrow win range. In a 5-wide condor, once
           price breaches a wing, you are quickly approaching max loss at expiration.
-          With size this huge, the market does not need a crash. It just needs to
-          drift into the wrong zone and stay there.
+          With size this huge, a drift into the wrong zone can produce a large loss.
         </p>
         <p>
-          This was not "bad luck." The distribution of SPX outcomes eventually
-          touches your wings and martingale guarantees you are biggest right before
-          it happens.
+          SPX eventually tests the wings. The martingale makes the position largest
+          before that test arrives.
         </p>
 
         <h2>Gamma &amp; Charm: Why the Market Didn't "Have To" Mean-Revert</h2>
@@ -245,10 +260,10 @@
           <li><strong>Negative gamma:</strong> destabilizes, trends, and accelerates.</li>
         </ul>
         <p>
-          When you are short condor wings, negative gamma zones are lethal. Moves can
-          cascade, so your short strikes get tested faster than "normal." In 0DTE and
-          short-dated books, hedging can push price into pain zones, pinning is never
-          guaranteed, and you should not bet survival on "it should stop here."
+          Short condor wings carry severe risk in negative gamma zones. Moves can
+          accelerate, so the market can test your short strikes within minutes. In
+          0DTE and short-dated books, hedging can push price into pain zones. A pin
+          can fail before expiration.
         </p>
 
         <h2 class="timeline-title">Timeline: How it unfolded</h2>
@@ -298,15 +313,15 @@
         <ul>
           <li>The credit shrinks while size explodes.</li>
           <li>The market moving a little more on later days is enough to blow up the entire ladder.</li>
-          <li>This is the core issue: your expected value does not scale linearly when you are short tails and short convexity.</li>
+          <li>Expected value does not scale linearly when you are short tails and short convexity.</li>
         </ul>
 
         <h2>Lessons / Rules</h2>
         <ul>
-          <li>Never martingale short options.</li>
-          <li>Don't confuse a defined-risk spread with a safe strategy.</li>
+          <li>Do not martingale short options.</li>
+          <li>Defined risk per spread does not make a strategy safe.</li>
           <li>If your plan requires one more try to work, it is already broken.</li>
-          <li>If the market must behave for your survival, you are not trading, you are praying.</li>
+          <li>Do not depend on the market staying inside your range to survive.</li>
           <li>Size is the strategy.</li>
         </ul>
 
@@ -342,9 +357,6 @@
         </p>
       </main>
 
-      <footer class="footer">
-        <p>Made with curiosity.</p>
-      </footer>
     </div>
   </body>
 </html>
