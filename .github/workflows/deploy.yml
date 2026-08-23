@@ -25,7 +25,7 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
-      - run: cp CNAME dist/CNAME && cp how-to-lose-50-million.html dist/how-to-lose-50-million.html && cp revenue-stablecoins-crypto-bull-run.html dist/revenue-stablecoins-crypto-bull-run.html
+      - run: cp CNAME dist/CNAME && cp styles.css dist/styles.css && cp how-to-lose-50-million.html dist/how-to-lose-50-million.html && cp revenue-stablecoins-crypto-bull-run.html dist/revenue-stablecoins-crypto-bull-run.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
