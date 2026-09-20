@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const posts = [
+  { date: '09/19/2026', title: 'Naive GEX Terminal', description: 'A market-structure dashboard featuring naive delta and gamma calculations from options-chain data.', href: 'https://naive-gex.vercel.app/' },
   { date: '08/23/2026', title: 'Revenue + Stablecoins: My Thesis for the 2026–2030 Crypto Bull Run', href: 'revenue-stablecoins-crypto-bull-run.html' },
   { date: '01/03/2026', title: 'How to Lose $50 Million with Iron Condors', href: 'how-to-lose-50-million.html' },
 ];
@@ -24,7 +25,7 @@ export default function App() {
   return <div className="page">
     <header className="topbar"><Link className="brand" to="/"><span className="logo">NN</span><span className="name">Nur Nibir</span></Link><nav className="nav"><Link to="/">home</Link><a href="#about">about</a></nav><div className="header-actions"><SocialLinks /><button className="theme-toggle" type="button" onClick={() => setDarkMode((value) => !value)} aria-label="Toggle dark theme">{darkMode ? '☼' : '☾'}</button></div></header>
     <section id="home" className="hero"><h1>Runtime Notes.</h1><p className="lede">Notes on software systems, markets, and the ideas between them. I write about engineering, finance, and the mechanics behind both.</p></section>
-    <main className="content"><section className="year-block"><h2>2026</h2><ol>{posts.map((post) => <li key={post.href}><span>({post.date})</span> <a href={`./${post.href}`}>{post.title}</a></li>)}</ol></section></main>
+    <main className="content"><section className="year-block"><h2>2026</h2><ol>{posts.map((post) => <li key={post.href}><span>({post.date})</span> <div><a href={post.href} target={post.href.startsWith('http') ? '_blank' : undefined} rel={post.href.startsWith('http') ? 'noreferrer' : undefined}>{post.title}</a>{post.description ? <p className="entry-description">{post.description}</p> : null}</div></li>)}</ol></section></main>
     <section id="about" className="about"><div className="about-card"><p className="date">January 20, 2026</p><h2>About Me</h2><p>Hey, I’m Nur. I grew up in Queens and studied computer science at Stony Brook University. I work with product teams on the systems behind customer-facing software. This site is where I collect experiments, market observations, and unfinished ideas.</p><p>I’ve built distributed systems at AWS, Amazon Alexa, Coinbase, and American Express. My work has covered platform migrations, performance, resiliency, and multi-region launches.</p></div></section>
   </div>;
 }
