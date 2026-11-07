@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const posts = [
+  { date: '11/07/2026', title: 'context-budgeter', description: 'Estimate repository token usage and identify files to exclude from agent context.', href: 'https://context-budgeter.vercel.app/' },
   { date: '10/22/2026', title: 'Token Tempo', description: 'An interactive hardware explorer for estimating local AI token speed, memory use, and context capacity across Apple, NVIDIA, and AMD systems.', href: 'https://token-speed-visualizer.vercel.app/' },
   { date: '09/19/2026', title: 'Naive GEX Terminal', description: 'A market-structure dashboard featuring naive delta and gamma calculations from options-chain data.', href: 'https://naive-gex.vercel.app/' },
   { date: '08/23/2026', title: 'Revenue + Stablecoins: My Thesis for the 2026–2030 Crypto Bull Run', href: 'revenue-stablecoins-crypto-bull-run.html' },
