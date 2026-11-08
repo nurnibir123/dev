@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 
 const posts = [
   { date: '11/07/2026', title: 'context-budgeter', description: 'Estimate repository token usage and identify files to exclude from agent context.', href: 'https://context-budgeter.vercel.app/' },
-  { date: '10/22/2026', title: 'Token Tempo', description: 'An interactive hardware explorer for estimating local AI token speed, memory use, and context capacity across Apple, NVIDIA, and AMD systems.', href: 'https://token-speed-visualizer.vercel.app/' },
   { date: '09/19/2026', title: 'Naive GEX Terminal', description: 'A market-structure dashboard featuring naive delta and gamma calculations from options-chain data.', href: 'https://naive-gex.vercel.app/' },
-  { date: '08/23/2026', title: 'Revenue + Stablecoins: My Thesis for the 2026–2030 Crypto Bull Run', href: 'revenue-stablecoins-crypto-bull-run.html' },
-  { date: '01/03/2026', title: 'How to Lose $50 Million with Iron Condors', href: 'how-to-lose-50-million.html' },
+  { date: '08/23/2026', title: 'My Thesis for the 2026–2029 Crypto Bull Run', description: 'An investment thesis on crypto protocols, stablecoins, and the businesses earning revenue from them.', href: 'revenue-stablecoins-crypto-bull-run.html' },
+  { date: '01/03/2026', title: 'How to Lose $50 Million with Iron Condors', description: 'A look at how escalating position sizes turned a defined-risk options strategy into a reported $50 million loss.', href: 'how-to-lose-50-million.html' },
 ];
 
 function SocialLinks() {
@@ -24,10 +23,14 @@ export default function App() {
     localStorage.setItem('theme', darkMode ? 'dark' : 'light');
   }, [darkMode]);
 
-  return <div className="page">
-    <header className="topbar"><Link className="brand" to="/"><span className="logo">NN</span><span className="name">Nur Nibir</span></Link><nav className="nav"><Link to="/">home</Link><a href="#about">about</a></nav><div className="header-actions"><SocialLinks /><button className="theme-toggle" type="button" onClick={() => setDarkMode((value) => !value)} aria-label="Toggle dark theme">{darkMode ? '☼' : '☾'}</button></div></header>
-    <section id="home" className="hero"><h1>Runtime Notes.</h1><p className="lede">Notes on software systems, markets, and the ideas between them. I write about engineering, finance, and the mechanics behind both.</p></section>
-    <main className="content"><section className="year-block"><h2>2026</h2><ol>{posts.map((post) => <li key={post.href}><span>({post.date})</span> <div><a href={post.href} target={post.href.startsWith('http') ? '_blank' : undefined} rel={post.href.startsWith('http') ? 'noreferrer' : undefined}>{post.title}</a>{post.description ? <p className="entry-description">{post.description}</p> : null}</div></li>)}</ol></section></main>
-    <section id="about" className="about"><div className="about-card"><p className="date">January 20, 2026</p><h2>About Me</h2><p>Hey, I’m Nur. I grew up in Queens and studied computer science at Stony Brook University. I work with product teams on the systems behind customer-facing software. This site is where I collect experiments, market observations, and unfinished ideas.</p><p>I’ve built distributed systems at AWS, Amazon Alexa, Coinbase, and American Express. My work has covered platform migrations, performance, resiliency, and multi-region launches.</p></div></section>
+  useEffect(() => {
+    document.documentElement.dataset.siteTheme = 'cobalt';
+    return () => { delete document.documentElement.dataset.siteTheme; };
+  }, []);
+
+  return <div className="page home-page">
+    <header className="topbar"><Link className="brand" to="/"><span className="logo">NN</span><span className="name">Nur Nibir</span></Link><div className="header-actions"><SocialLinks /><button className="theme-toggle" type="button" onClick={() => setDarkMode((value) => !value)} aria-label="Toggle dark theme">{darkMode ? '☼' : '☾'}</button></div></header>
+    <main id="home" className="content"><section className="year-block"><div className="list-heading"><h2>Notes on software, AI, and markets.</h2></div><ol>{posts.map((post) => <li key={post.href}><span>({post.date})</span> <div><a href={post.href} target={post.href.startsWith('http') ? '_blank' : undefined} rel={post.href.startsWith('http') ? 'noreferrer' : undefined}>{post.title}</a>{post.description ? <p className="entry-description">{post.description}</p> : null}</div></li>)}</ol></section></main>
+    <section id="about" className="about"><div className="about-card"><h2>About Me</h2><p className="date">January 20, 2026</p><p>Hey, I’m Nur. I grew up in Queens and studied computer science at Stony Brook University. I work with product teams on the systems behind customer-facing software. This site is where I collect experiments, market observations, and unfinished ideas.</p><p>I’ve built distributed systems at AWS, Amazon Alexa, Coinbase, and American Express. My work has covered platform migrations, performance, resiliency, and multi-region launches.</p></div></section>
   </div>;
 }
