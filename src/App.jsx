@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 const posts = [
+  { date: '11/08/2026', title: 'hyperflow', description: 'Track large Hyperliquid trades with AI.', href: 'https://hyperflow-beryl.vercel.app/' },
   { date: '11/07/2026', title: 'context-budgeter', description: 'Estimate repository token usage and identify files to exclude from agent context.', href: 'https://context-budgeter.vercel.app/' },
   { date: '09/19/2026', title: 'Naive GEX Terminal', description: 'A market-structure dashboard featuring naive delta and gamma calculations from options-chain data.', href: 'https://naive-gex.vercel.app/' },
   { date: '08/23/2026', title: 'My Thesis for the 2026–2029 Crypto Bull Run', description: 'An investment thesis on crypto protocols, stablecoins, and the businesses earning revenue from them.', href: 'revenue-stablecoins-crypto-bull-run.html' },
